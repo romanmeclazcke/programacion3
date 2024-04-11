@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class Node<T> implements Iterator<T> {
+public class Node<T> {
     private T info;
     private Node<T> next;
     private Node<T> previous;
@@ -38,23 +38,10 @@ public class Node<T> implements Iterator<T> {
         this.next = next;
     }
 
-    @Override
-    public boolean hasNext() {
-        return this.next != null;
+    public String toString() {
+        return "Node{data=" + this.info + "}";
     }
 
-    @Override
-    public T next() {
-        if (!hasNext()) {
-            return null;
-        } else {
-            return this.getNext().getInfo();
-        }
-    }
-
-    // @Override
-    // public int compareTo(T o) {
-    // return this.info.compareTo(String(o));
-    // }
+   
 
 }
