@@ -20,19 +20,24 @@ public class main {
         lista2.insertFront(22);
         lista2.insertFront(5);
 
+
         // Mostrar lista1 y lista2 antes de unir
         System.out.println("Lista 1 antes de unir:");
         System.out.println(lista1);
         System.out.println("Lista 2 antes de unir:");
         System.out.println(lista2);
 
+        MySimpleLinkedList<Integer> listaNounion = CreateListElementosExlusivos(lista1, lista2);
         // Unir las listas ordenadamente
-        MySimpleLinkedList<Integer> listaUnidaOrdenada = CreateListUnionOrdenadas(lista1, lista2);
+       // MySimpleLinkedList<Integer> listaUnidaOrdenada = CreateListUnionOrdenadas(lista1, lista2);
 
         // Mostrar la lista unida ordenadamente
         System.out.println("Lista unida ordenada:");
-        System.out.println(listaUnidaOrdenada);
+        System.out.println(listaNounion);
     }
+
+
+
 
     public static MySimpleLinkedList<Integer> CreateListUnionOrdenadas(MySimpleLinkedList<Integer> list1,MySimpleLinkedList<Integer> list2) {
         MyIterator<Integer> it1 = list1.iterator();
@@ -59,30 +64,30 @@ public class main {
 
     }
 
-    // Otros métodos
 
-    public MySimpleLinkedList CreateListUnion(MySimpleLinkedList list1, MySimpleLinkedList list2) {
-        MySimpleLinkedList aux = new MySimpleLinkedList();
-        for (int a = 0; a < list1.getSize(); a++) {
-            int result = list2.indexOf(list1.indexOf(a));
-            if (result > 0) {
-                aux.insertFront(list1.getIndex(a));
+    public static MySimpleLinkedList<Integer> CreateListElementosExlusivos(MySimpleLinkedList<Integer> list1, MySimpleLinkedList<Integer> list2) {
+        MySimpleLinkedList<Integer> aux = new MySimpleLinkedList<>();
+        MyIterator<Integer> it1 = list1.iterator();
+        MyIterator<Integer> it2 = list2.iterator();
+        while (it1.hasNext()) {
+            Integer n1 = it1.get();
+            if (list2.indexOf(n1) == -1) {
+                aux.insertFront(n1);
             }
+            it1.next();
         }
-        return aux;
-
-    }
-
-    public MySimpleLinkedList CreateListElementosExlusivos(MySimpleLinkedList a1, MySimpleLinkedList list2) {
-        MySimpleLinkedList aux = new MySimpleLinkedList();
-        for (int a = 0; a < a1.getSize(); a++) {
-            int result = list2.indexOf(a1.indexOf(a));
-            if (result < 0) {
-                aux.insertFront(a1.getIndex(a));
+    
+        
+        while (it2.hasNext()) {
+            Integer n2 = it2.get();
+            if (list1.indexOf(n2) == -1) {
+                aux.insertFront(n2);
             }
+            it2.next();
         }
+    
         return aux;
-
     }
+    
 
 }

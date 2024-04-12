@@ -62,8 +62,8 @@ public class MySimpleLinkedList<T> implements Iterable<T> {
     public int indexOf(T node) {
         int contador = 0;
         Node<T> aux = this.firstNode;
-        for (int i = 0; i > size; i++) {
-            if (aux == node) {
+        for (int i = 0; i < size; i++) {
+            if (aux.getInfo().equals(node)) {
                 return contador;
             }
             contador++;
