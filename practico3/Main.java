@@ -18,7 +18,7 @@ class Main {
         tree.add(14);
 
     
-        ArrayList<TreeNode> aux = tree.getFrontera();
+        ArrayList<TreeNode> aux = tree.getMayores(1);
         for (TreeNode node : aux) {  
            System.out.println(node.getValue());
         }

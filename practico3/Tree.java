@@ -242,7 +242,7 @@ public class Tree {
     private ArrayList<TreeNode> getMayores(TreeNode nodo, Integer valor) {
         ArrayList<TreeNode> aux = new ArrayList<>();
         
-        if (nodo.getValue() > valor) {
+        if (nodo.getValue() > valor && nodo.getRight()==null && nodo.getLeft()==null) {
             aux.add(nodo);
         }
         if (nodo.getRight() != null) {
