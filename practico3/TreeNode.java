@@ -3,11 +3,23 @@ public class TreeNode {
 	private Integer value;
 	private TreeNode left;
 	private TreeNode right;
+	private char valor;
+
+	
+
+	public char getValor() {
+		return valor;
+	}
+
+	public void setValor(char valor) {
+		this.valor = valor;
+	}
 
 	public TreeNode(Integer value) {
 		this.value = value;
 		this.left = null;
 		this.right = null;
+
 	}
 
 	public TreeNode getLeft() {
