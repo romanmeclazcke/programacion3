@@ -132,9 +132,35 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			}
 		}
 
-		//vertice.setColor="Negro"
+		vertice.setColor("Negro");
 		//tiempo = tiempo+1
 		//vertice.setTiempoFin= tiempo;
+	}
+
+	public boolean hasCycle(){
+		for (Vertice vertice : this.listaVertices) {
+			 return this.dfsVisitHasCycle(vertice);
+		}
+		return false;
+	}
+
+	public boolean dfsVisitHasCycle(Vertice vertice){//metodo encargado de recorrer en dfs y verificar si hay algun vertice por visitar que este en amarillo
+		vertice.setColor("Amarillo");			 //si existe significa que estoy en un ciclo y deberia terminar de recorrer
+		//tiempo = tiempo+1;
+		//vertice.setTiempoInicio = tiempo;
+
+		for (Vertice v : vertice.getList()) {
+			if (v.getColor()=="Blanco") {
+				dfsVisit(v);
+			}
+			if(v.getColor()=="Amarillo"){
+				return true; 				
+			}
+		}
+		vertice.setColor("Negro");
+		//tiempo = tiempo+1
+		//vertice.setTiempoFin= tiempo;
+		return false;
 	}
 
 	@Override
