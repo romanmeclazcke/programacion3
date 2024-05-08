@@ -85,25 +85,25 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public Iterator<Integer> obtenerVertices() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
