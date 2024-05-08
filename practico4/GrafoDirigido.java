@@ -1,10 +1,11 @@
 import java.util.Iterator;
 import java.util.LinkedList;
+
 public class GrafoDirigido<T> implements Grafo<T> {
 	private LinkedList<Vertice> listaVertices;
 
-	public GrafoDirigido(){
-		this.listaVertices= new LinkedList<Vertice>();
+	public GrafoDirigido() {
+		this.listaVertices = new LinkedList<Vertice>();
 	}
 
 	@Override
@@ -15,25 +16,25 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public void borrarVertice(int verticeId) {
-		for(int i=0;i<listaVertices.size();i++){
-			if(listaVertices.get(i).getValue()==verticeId){
+		for (int i = 0; i < listaVertices.size(); i++) {
+			if (listaVertices.get(i).getValue() == verticeId) {
 				listaVertices.remove(i);
 			}
 		}
 	}
 
-
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-		if(this.getVertice(verticeId1)!=null && this.getVertice(verticeId2)!=null){
-			Arco<T> arc= new Arco<T>(verticeId1, verticeId2, etiqueta);
-			this.getVertice(verticeId1).addAdyacente(this.getVertice(verticeId2));
-		};
+		if (this.getVertice(verticeId1) != null && this.getVertice(verticeId2) != null) {
+			Arco<T> arc = new Arco<T>(verticeId1, verticeId2, etiqueta);
+			this.getVertice(verticeId1).addAdyacente(arc);
+		}
+		;
 	}
 
-	public Vertice getVertice(int id){
-		for(int i=0;i<listaVertices.size();i++){
-			if (listaVertices.get(i).getValue()==id) {
+	public Vertice getVertice(int id) {
+		for (int i = 0; i < listaVertices.size(); i++) {
+			if (listaVertices.get(i).getValue() == id) {
 				return listaVertices.get(i);
 			}
 		}
@@ -42,23 +43,25 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public void borrarArco(int verticeId1, int verticeId2) {
-		if (this.getVertice(verticeId1)!=null && this.getVertice(verticeId2)!=null) {
+		if (this.getVertice(verticeId1) != null && this.getVertice(verticeId2) != null) {
 			this.getVertice(verticeId1).deleteArco(verticeId2);
 		}
 	}
 
 	@Override
 	public boolean contieneVertice(int verticeId) {
-		return this.listaVertices!=null;
+		return this.listaVertices != null;
 	}
 
 	@Override
 	public boolean existeArco(int verticeId1, int verticeId2) {
 		Vertice v1 = this.getVertice(verticeId1);
 		Vertice v2 = this.getVertice(verticeId2);
-		if (v1!=null) {
-			LinkedList<Vertice> aux = v1.getList();
-			return aux.contains(v2);
+		if (v1 != null && v2 != null) {
+			if (v1.ExistArco(verticeId2) != -1) {
+				return true;
+
+			}
 		}
 		return false;
 	}
@@ -76,97 +79,112 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public int cantidadArcos() {
-		int suma=0;
+		int suma = 0;
 		for (Vertice v : listaVertices) {
-			suma +=v.getCantArcos();
+			suma += v.getCantArcos();
 		}
 		return suma;
 	}
 
 	@Override
 	public Iterator<Integer> obtenerVertices() {
-		
-		return null;
+		LinkedList<Integer> vertices = new LinkedList<>();
+		for (Vertice v : this.listaVertices) {
+			vertices.add(v.getValue());
+		}
+		return vertices.iterator();
 	}
 
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
-		
+		LinkedList<Integer> vertices = new LinkedList<>();
+		Vertice exist = this.getVertice(verticeId);
+		if (exist != null) {
+			for (Arco<T> arco : exist.getListaAdyacencia()) {
+				vertices.add(arco.getVerticeDestino());
+			}
+		}
+		return vertices.iterator();
+	}
+
+	@Override
+	public Iterator<Arco<T>> obtenerArcos() { // preguntar si el vertice guarda los Arcos
+
 		return null;
 	}
 
 	@Override
-	public Iterator<Arco<T>> obtenerArcos() {
-		
+	public Iterator<Arco<T>> obtenerArcos(int verticeId) { // preguntar si el vertice guarda los Arcos
+
 		return null;
 	}
 
-	@Override
-	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-		
-		return null;
-	}
+	// @Override
+	// public void DepthFirstSearch(int verticeId) {
+	// 	for (Vertice vertice : this.listaVertices) {
+	// 		vertice.setColor("blanco");
+	// 	}
 
-	@Override
-	public void DepthFirstSearch(int verticeId) {
-		for (Vertice vertice : this.listaVertices) {
-			vertice.setColor("blanco");
-		}
+	// 	for (Vertice v : this.listaVertices) {
+	// 		if (v.getColor() == "blanco") {
+	// 			dfsVisit(v);
+	// 		}
+	// 	}
+	// }
 
+	// public void dfsVisit(Vertice vertice) {
+	// 	vertice.setColor("Amarillo");
+	// 	// tiempo = tiempo+1;
+	// 	// vertice.setTiempoInicio = tiempo;
 
-		for (Vertice v : this.listaVertices) {
-			if (v.getColor()=="blanco") {
-				dfsVisit(v);
-			}
-		}
-	}
+	// 	for (Vertice v : vertice.getListaAdyacencia()) {
+	// 		if (v.getColor() == "Blanco") {
+	// 			dfsVisit(v);
+	// 		}
+	// 	}
 
-	public void dfsVisit(Vertice vertice){
-		vertice.setColor("Amarillo");
-		//tiempo = tiempo+1;
-		//vertice.setTiempoInicio = tiempo;
+	// 	vertice.setColor("Negro");
+	// 	// tiempo = tiempo+1
+	// 	// vertice.setTiempoFin= tiempo;
+	// }
 
-		for (Vertice v : vertice.getList()) {
-			if (v.getColor()=="Blanco") {
-				dfsVisit(v);
-			}
-		}
+	// public boolean hasCycle() {
+	// 	for (Vertice vertice : this.listaVertices) {
+	// 		return this.dfsVisitHasCycle(vertice);
+	// 	}
+	// 	return false;
+	// }
 
-		vertice.setColor("Negro");
-		//tiempo = tiempo+1
-		//vertice.setTiempoFin= tiempo;
-	}
+	// public boolean dfsVisitHasCycle(Vertice vertice) {// metodo encargado de recorrer en dfs y verificar si hay algun
+	// 													// vertice por visitar que este en amarillo
+	// 	vertice.setColor("Amarillo"); // si existe significa que estoy en un ciclo y deberia terminar de recorrer
+	// 	// tiempo = tiempo+1;
+	// 	// vertice.setTiempoInicio = tiempo;
 
-	public boolean hasCycle(){
-		for (Vertice vertice : this.listaVertices) {
-			 return this.dfsVisitHasCycle(vertice);
-		}
-		return false;
-	}
-
-	public boolean dfsVisitHasCycle(Vertice vertice){//metodo encargado de recorrer en dfs y verificar si hay algun vertice por visitar que este en amarillo
-		vertice.setColor("Amarillo");			 //si existe significa que estoy en un ciclo y deberia terminar de recorrer
-		//tiempo = tiempo+1;
-		//vertice.setTiempoInicio = tiempo;
-
-		for (Vertice v : vertice.getList()) {
-			if (v.getColor()=="Blanco") {
-				dfsVisit(v);
-			}
-			if(v.getColor()=="Amarillo"){
-				return true; 				
-			}
-		}
-		vertice.setColor("Negro");
-		//tiempo = tiempo+1
-		//vertice.setTiempoFin= tiempo;
-		return false;
-	}
+	// 	for (Vertice v : vertice.getList()) {
+	// 		if (v.getColor() == "Blanco") {
+	// 			dfsVisit(v);
+	// 		}
+	// 		if (v.getColor() == "Amarillo") {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	vertice.setColor("Negro");
+	// 	// tiempo = tiempo+1
+	// 	// vertice.setTiempoFin= tiempo;
+	// 	return false;
+	// }
 
 	@Override
 	public void BreadthFirstSearch() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'BreadthFirstSearch'");
+	}
+
+	@Override
+	public void DepthFirstSearch(int verticeId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'DepthFirstSearch'");
 	}
 
 }
