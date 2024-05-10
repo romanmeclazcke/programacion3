@@ -1,80 +1,82 @@
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 
+
 public class GrafoDirigido<T> implements Grafo<T> {
-	private LinkedList<Vertice<T>> listaVertices;
+	
+
+	private Hashtable<Integer,LinkedList<Arco<T>>> vertices;
 
 	public GrafoDirigido() {
-		this.listaVertices = new LinkedList<Vertice<T>>();
+		this.vertices= new Hashtable<>();
 	}
 
 	@Override
 	public void agregarVertice(int verticeId) {
-		Vertice<T> v = new Vertice(verticeId);
-		this.listaVertices.add(v);
+		this.vertices.put(verticeId, new LinkedList<Arco<T>>());
 	}
 
 	@Override
 	public void borrarVertice(int verticeId) {
-		int index = this.getIndexVertice(verticeId);
-		if (index != -1) {
-			this.listaVertices.remove(index);
+		if (this.vertices.containsKey(verticeId)) {
+			this.vertices.remove(verticeId);	
 
-		}
-	}
+			Iterator<Integer> it = this.vertices.keySet().iterator();
 
-	public int getIndexVertice(int verticeId) {
-		for (int i = 0; i < listaVertices.size(); i++) {
-			if (listaVertices.get(i).getValue() == verticeId) {
-				return i;
+			while (it.hasNext()) {
+				LinkedList<Arco<T>> lista = this.vertices.get(it.next());
+				Iterator<Arco<T>> iteradorLista= lista.iterator();
+
+				while(iteradorLista.hasNext()){
+					Arco<T> arco = iteradorLista.next();
+					if(arco.getVerticeDestino()==verticeId){
+						lista.remove(arco);
+					}
+				}
 			}
+			
+			
 		}
-		return -1;
-	}
 
-	public Vertice<T> getVertice(int id) {
-		for (int i = 0; i < listaVertices.size(); i++) {
-			if (listaVertices.get(i).getValue() == id) {
-				return listaVertices.get(i);
-			}
-		}
-		return null;
+
 	}
 
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-		Vertice<T> v1 = this.getVertice(verticeId1);
-		Vertice<T> v2 = this.getVertice(verticeId2);
-		if (v1 != null && v2 != null) {
-			Arco<T> arc = new Arco<T>(verticeId1, verticeId2, etiqueta);
-			v1.addAdyacente(arc, v2); // agrego a la lista de arcos y a la de vertices
+		if (this.vertices.containsKey(verticeId1) && this.vertices.containsKey(verticeId2)) {
+			Arco<T> arco= new Arco<T>(verticeId1, verticeId2, etiqueta);
+			this.vertices.get(verticeId1).add(arco);
+			
 		}
-		;
 	}
 
 	@Override
 	public void borrarArco(int verticeId1, int verticeId2) {
-		Vertice<T> v1 = this.getVertice(verticeId1);
-		Vertice<T> v2 = this.getVertice(verticeId2);
-		if (v1 != null && v2 != null) {
-			v1.deleteArco(verticeId2, v2);
+		if (this.vertices.containsKey(verticeId1)&&this.vertices.containsKey(verticeId2)) {
+			this.vertices.get(verticeId1).remove(verticeId2);
 		}
 	}
 
 	@Override
 	public boolean contieneVertice(int verticeId) {
-		return this.listaVertices != null;
+		if (this.vertices.containsKey(verticeId)) {
+			return this.vertices.get(verticeId)!=null;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean existeArco(int verticeId1, int verticeId2) {
-		Vertice<T> v1 = this.getVertice(verticeId1);
-		Vertice<T> v2 = this.getVertice(verticeId2);
-		if (v1 != null && v2 != null) {
-			if (v1.ExistArco(verticeId2) != -1) {
-				return true;
+		if (this.vertices.containsKey(verticeId1) && this.vertices.containsKey(verticeId2)) {
+			Iterator<Arco<T>> iterator = this.vertices.get(verticeId1).iterator();
 
+			while(iterator.hasNext()){
+				Arco<T> aux = iterator.next();
+				if (aux.getVerticeOrigen()== verticeId1 && aux.getVerticeDestino()==verticeId2) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -82,126 +84,77 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
-		if (this.getVertice(verticeId1) != null && this.getVertice(verticeId2) != null) {
-			return this.getVertice(verticeId1).getArco(verticeId2);
+		if (this.vertices.containsKey(verticeId1) && this.vertices.containsKey(verticeId2)) {
+			Iterator<Arco<T>> iterator = this.vertices.get(verticeId1).iterator();
+			//get retorna linkedlist de arco (el valor asociado a la clave) => iterator agarro el iterador de esa lista de arcos
+
+			while(iterator.hasNext()){
+				Arco<T> aux = iterator.next();
+				if (aux.getVerticeOrigen()== verticeId1 && aux.getVerticeDestino()==verticeId2) {
+					return aux;
+				}
+			}
 		}
 		return null;
 	}
 
 	@Override
 	public int cantidadVertices() {
-		return this.listaVertices.size();
+		return this.vertices.size();
 	}
 
 	@Override
 	public int cantidadArcos() {
-		int suma = 0;
-		for (Vertice<T> v : this.listaVertices) {
-			suma += v.getCantArcos();
+		int contador=0;
+		for (LinkedList<Arco<T>> lista : vertices.values()) {
+			contador += lista.size();
 		}
-		return suma;
+		return contador;
 	}
 
 	@Override
 	public Iterator<Integer> obtenerVertices() {
-		LinkedList<Integer> vertices = new LinkedList<>();
-		for (Vertice<T> v : this.listaVertices) {
-			vertices.add(v.getValue());
-		}
-		return vertices.iterator();
+		return this.vertices.keySet().iterator();
 	}
 
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
-		LinkedList<Integer> vertices = new LinkedList<>();
-		Vertice<T> vertice = this.getVertice(verticeId);
-		if (vertice != null) {
-			for (Arco<T> arco : vertice.getListaAdyacenciaArcos()) {
-				vertices.add(arco.getVerticeDestino());
-			}
-		}
-		return vertices.iterator();
+		return null;
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
-		LinkedList<Arco<T>> aux = new LinkedList<Arco<T>>();
-		for (Vertice<T> vertice : this.listaVertices) {
-			aux.addAll(vertice.getListaAdyacenciaArcos());
+		LinkedList<Arco<T>> aux= new LinkedList<>();
+		for(Integer vertice : this.vertices.keySet()){
+			aux.addAll(this.vertices.get(vertice));
 		}
 		return aux.iterator();
 	}
 
+
+
 	@Override
 	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-		LinkedList<Arco<T>> resultado = new LinkedList<>();
-		this.getVertice(verticeId).getListaAdyacenciaArcos();
-		for (Vertice<T> vertice : this.listaVertices) {
-			resultado.addAll(vertice.getListaAdyacenciaArcos());
-		}
-		return resultado.iterator();
-
+			if (this.vertices.containsKey(verticeId)) {
+				return this.vertices.get(verticeId).iterator();
+			}
+			return null;
+	
 	}
 
 	@Override
 	public void DepthFirstSearch(int verticeId) {
-		for (Vertice<T> vertice : this.listaVertices) {
-			vertice.setColor("blanco");
-		}
-
-		for (Vertice<T> v : this.listaVertices) {
-			if (v.getColor() == "blanco") {
-				dfsVisit(v);
-			}
-		}
-	}
-
-	public void dfsVisit(Vertice<T> vertice) {
-		vertice.setColor("Amarillo");
-		// tiempo = tiempo+1;
-		// vertice.setTiempoInicio = tiempo;
-
-		for (Vertice<T> v : vertice.getListaAdyacenciaVertices()) {
-			if (v.getColor() == "Blanco") {
-				dfsVisit(v);
-			}
-		}
-
-		vertice.setColor("Negro");
-		// tiempo = tiempo+1
-		// vertice.setTiempoFin= tiempo;
-	}
-
-	public boolean hasCycle() {
-		for (Vertice<T> vertice : this.listaVertices) {
-			return this.dfsVisitHasCycle(vertice);
-		}
-		return false;
-	}
-
-	public boolean dfsVisitHasCycle(Vertice<T> vertice) {// metodo encargado de recorrer en dfs y verificar si hay algun
-														// vertice por visitar que este en amarillo
-		vertice.setColor("Amarillo"); // si existe significa que estoy en un ciclo y deberia terminar de recorrer
-		// tiempo = tiempo+1;
-		// vertice.setTiempoInicio = tiempo;
-
-		for (Vertice<T> v : vertice.getListaAdyacenciaVertices()) {
-			if (v.getColor() == "Blanco") {
-				// dfsVisit(v);
-			}
-			if (v.getColor() == "Amarillo") {
-				return true;
-			}
-		}
-		vertice.setColor("Negro");
-		// tiempo = tiempo+1
-		// vertice.setTiempoFin= tiempo;
-		return false;
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'DepthFirstSearch'");
 	}
 
 	@Override
 	public void BreadthFirstSearch() {
-
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'BreadthFirstSearch'");
 	}
+
+	
+
 
 }
