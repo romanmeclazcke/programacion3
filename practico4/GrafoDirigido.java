@@ -54,8 +54,17 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public void borrarArco(int verticeId1, int verticeId2) {
-		if (this.vertices.containsKey(verticeId1)&&this.vertices.containsKey(verticeId2)) {
-			this.vertices.get(verticeId1).remove(verticeId2);
+		if (this.vertices.containsKey(verticeId1) && this.vertices.containsKey(verticeId2)) {
+			LinkedList<Arco<T>> listaArcos = this.vertices.get(verticeId1);
+			Iterator<Arco<T>> it = listaArcos.iterator();
+
+			while (it.hasNext()) {
+				Arco<T> arco = it.next();
+
+				if (arco.getVerticeDestino() == verticeId2) {
+					listaArcos.remove(arco);
+				}
+			}
 		}
 	}
 
@@ -119,6 +128,9 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public Iterator<Integer> obtenerAdyacentes(int verticeId) {
+		if(this.vertices.containsKey(verticeId)){
+			return new IteratorVertices<>(this.vertices.get(verticeId).iterator());
+		}
 		return null;
 	}
 
@@ -144,8 +156,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public void DepthFirstSearch(int verticeId) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'DepthFirstSearch'");
+		
 	}
 
 	@Override
