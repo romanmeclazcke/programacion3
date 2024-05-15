@@ -71,7 +71,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public boolean contieneVertice(int verticeId) {
 		if (this.vertices.containsKey(verticeId)) {
-			return this.vertices.get(verticeId)!=null;
+			LinkedList<Arco<T>> aux= this.vertices.get(verticeId);
+			return aux.size()!=0;
 		}
 		return false;
 	}

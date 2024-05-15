@@ -23,7 +23,7 @@ public class ServisCycle<T> {
         Iterator<Integer> iterador2= grafo.obtenerVertices();
 
         while (iterador2.hasNext()) {
-            DepthFirstSearch(iterador.next(), grafo);
+            DepthFirstSearch(iterador2.next(), grafo);
         }
     }
 
