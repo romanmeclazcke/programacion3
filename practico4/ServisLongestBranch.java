@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class ServisLongestBranch {
 
-
+    
 
     public  LinkedList<Integer> ServisLongestBranch(Grafo<Integer> grafo, int origen, int destino){
              return LongetBranch(grafo, origen, destino);
@@ -22,7 +22,6 @@ public class ServisLongestBranch {
                 aux.add(origen); // Agregar el vértice actual
                 return aux;
             }
-    
             aux = LongetBranch(grafo, vertice, destino);
             aux.addFirst(origen);
             if (aux.size() > result.size()) {
