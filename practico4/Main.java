@@ -25,6 +25,7 @@ public class Main {
 		grafito.agregarArco(2, 4, null);
 		grafito.agregarArco(4, 5, null);
 		grafito.agregarArco(5, 6, null);
+		grafito.agregarArco(5, 6, null);
 		grafito.agregarArco(3, 7, null);
 		grafito.agregarArco(7, 8, null);
 		grafito.agregarArco(8, 9, null);
@@ -42,8 +43,9 @@ public class Main {
 
 		ServisLongestBranch ramamaslarga= new ServisLongestBranch();
 		ServisExistBranch existeBracnhTo = new ServisExistBranch();
+		ServiesShortestBranch ramaMasCorta= new ServiesShortestBranch();
 
-		System.out.println(ramamaslarga.getLongestBranchBactracking(grafito,1,12));
+		System.out.println(ramaMasCorta.getShortestBranch(grafito, 1, 4));
 	
 	}
 
