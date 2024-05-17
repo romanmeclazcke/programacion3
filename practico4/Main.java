@@ -18,6 +18,7 @@ public class Main {
 		grafito.agregarVertice(10);
 		grafito.agregarVertice(11);
 		grafito.agregarVertice(12);
+
 		// Genero un arco desde 1 hasta 2 con el valor de etiqueta 3
 		grafito.agregarArco(1, 2, 10);
 		grafito.agregarArco(2, 3, 30);
@@ -33,9 +34,7 @@ public class Main {
 
 
 		
-		
-		// Obtengo el arco entre 1 y 2, y le pido la etiqueta
-		
+
 		// System.out.println(grafito.cantidadVertices());
 		// System.out.println(grafito.cantidadArcos());
 		// grafito.borrarArco(1,2);
@@ -44,7 +43,7 @@ public class Main {
 		ServisLongestBranch ramamaslarga= new ServisLongestBranch();
 		ServisExistBranch existeBracnhTo = new ServisExistBranch();
 
-		System.out.println(existeBracnhTo.existBranch(grafito, 10));
+		System.out.println(ramamaslarga.getLongestBranchBactracking(grafito,1,12));
 	
 	}
 
