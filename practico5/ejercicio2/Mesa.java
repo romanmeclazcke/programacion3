@@ -6,28 +6,27 @@ public class Mesa {
     public Mesa(Posicion[][] mesa) {
         this.posiciones = mesa;
     }
-    
 
-    public Posicion getPosicion(int x, int y){
+    public Posicion getPosicion(int x, int y) {
         return this.posiciones[x][y];
     }
 
-    public int getValor(int x, int y){
-        return this.posiciones[x][y].getValor();
+    public int getValor(int x, int y) {
+        return this.posiciones[x][y-1].getValor();
     }
 
-    public int[][] getPosicionValor(int valor) {
-        int[][] posicion = new int[1][1]; // Array para almacenar la posición encontrada (fila y columna)
-        for (int fila = 0; fila < posicion.length-1; fila++) {
-            for (int columna = 0; columna < posiciones[0].length-1; columna++) {
-                if (posiciones[fila][columna].getValor() == valor) {
-                    posicion[0][0] = fila;
-                    posicion[0][1] = columna;
-                    return posicion; // Retorna la primera posición encontrada
+    public int[] getPosicionValor(int valor) {
+        int[] posicion = new int[2];
+
+        for (int i = 0; i < this.posiciones.length; i++) {
+            for (int j = 0; j < this.posiciones[0].length; j++) {
+                if (this.posiciones[i][j].getValor() == valor) {
+                    posicion[0] = i;
+                    posicion[1] = j;
                 }
             }
         }
-        return null;
+        return posicion;
     }
-    
+
 }
