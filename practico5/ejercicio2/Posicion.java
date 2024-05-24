@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Posicion {
     private int valor;
-    Boolean norte, sur,este,oeste;
+    Boolean norte, sur,oeste,este;
 
-    public Posicion(int valor, boolean norte, boolean sur, boolean este,boolean oeste ){
+    public Posicion(int valor, boolean norte, boolean sur, boolean oeste,boolean este ){
         this.valor=valor;
         this.norte=norte;
         this.sur=sur;
